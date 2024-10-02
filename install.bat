@@ -46,15 +46,28 @@ Write-Host '[4/7] Modsのダウンロードリンクを作成しました。'
 # リンクからダウンロード実行してファイルチェック
 Write-Host '[5/7] Modsをダウンロード中...'
 Invoke-WebRequest -Uri "${DRIVE_DOWNLOAD_LINK}" -OutFile ${ARCHIVE_FILE}
+$RESULT_CODE = $?
+# ダウンロード処理が失敗した場合、削除する
+if (${RESULT_CODE}) {
+    Remove-Item -Path "${ARCHIVE_FILE}"
+}
+
 # ファイルチェック
 if (Test-Path "${ARCHIVE_FILE}") {
     Write-Host "[5/7] ${ARCHIVE_FILE}は正常にダウンロードされました。"
+    Write-Host '[5/7] Modsのダウンロードが完了しました。'
 } else {
     Write-Warning "[5/7] ${ARCHIVE_FILE}のダウンロードに失敗しました。"
     Write-Host "[5/7] ファイルIDが正しいか確認してください。: ${DRIVE_FILE_ID}"
-    panic
+    Write-Host "[5/7] またはファイルサイズが大きい場合手動で${ARCHIVE_FILE}をここに配置してから続行してください。: $(pwd)"; pause
+    Write-Host '[5/7] Modsを取得中...'
+    if (Test-Path "${ARCHIVE_FILE}") {
+        Write-Host '[5/7] Modsの取得が完了しました。'
+    } else {
+        Write-Warning '[5/7] Modsの取得に失敗しました。終了します。'
+        panic
+    }
 }
-Write-Host '[5/7] Modsのダウンロードが完了しました。'
 
 # mods.zip を展開
 Write-Host '[6/7] Modsをインストール中...'
