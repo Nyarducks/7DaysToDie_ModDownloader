@@ -12,6 +12,7 @@ Tool to set up 7 Days To Die mods via shared Google Drive.
 ### 注意：
 - 前提mods(`0_TFP_Harmony`)以外は一度削除されます。
 - ダウンロードしたファイルは処理完了後に削除されます。
+  - 手動で配置した`mods.zip`は削除されません。
 - ダウンロード可能なファイルはGoogle Driveで共有されたもののみです。
   - エラーが発生した場合は手動で`mods.zip`を配置する必要があります。
 
@@ -20,7 +21,8 @@ Tool to set up 7 Days To Die mods via shared Google Drive.
 - mods導入を簡単に行うためのユーティリティツール
 
 ### 変更点
-- powershell wrapperがUTF-8以外の環境で実行すると異常終了する問題を修正
-- ダウンロードリンク作成時にリンクを出力するように修正
-- 前提MODを除いたmodsファイルを自動で削除する処理を追加
-- 処理の最適化
+- powershell wrapperがUTF-8以外の環境で実行すると異常終了する問題を修正 (v1.2)
+- ダウンロードリンク作成時にリンクを出力するように修正 (v1.1)
+- 前提MODを除いたmodsファイルを自動で削除する処理を追加 (v1.1)
+- 処理の最適化 (v1.2)
+- ラージファイルに対応 (v1.3)
