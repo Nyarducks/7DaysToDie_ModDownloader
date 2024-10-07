@@ -16,8 +16,8 @@ function withDelay { sleep 1 }
 # テストディレクトリ削除
 function cleanTestDirectory { Remove-Item -Recurse -Force -Path "${TEST_EXTRACTION_PATH}" 2>$null }
 
-# 設定ファイルからファイルパスを読み込む
-Write-Host "[1/${STEPS}] 設定ファイルからファイルパスを読み込み中..."; withDelay
+# 設定ファイルから設定値を読み込む
+Write-Host "[1/${STEPS}] 設定ファイルから設定値を読み込み中..."; withDelay
 $SETTING_FILE = 'setting.ini'
 if (Test-Path $SETTING_FILE) {} else {
     Write-Warning "[1.1/${STEPS}] [エラー] 設定ファイルが見つかりません：${SETTING_FILE}"; panic
@@ -25,6 +25,7 @@ if (Test-Path $SETTING_FILE) {} else {
 
 $CONFIG_STORE = (Get-Content -Path "${SETTING_FILE}" -Raw -Encoding UTF8).Replace('\', '\\') | ConvertFrom-StringData
 Write-Host "[1.1/${STEPS}] 設定中のファイルパス: $($CONFIG_STORE.FILE_PATH)"
+Write-Host "[1.1/${STEPS}] 設定中のファイルID: $($CONFIG_STORE.FILE_ID)"
 Write-Host "[1/${STEPS}] 読み込みが完了しました。"
 
 # ディレクトリチェック
@@ -47,9 +48,9 @@ if (Test-Path ${APP_FILE}) {
 }
 Write-Host "[3/${STEPS}] 7 Days To Dieの存在チェックが完了しました。"
 
-# ファイルIDを入力してダウンロードリンクを作成
+# ファイルIDを取得してダウンロードリンクを作成
 Write-Host "[4/${STEPS}] Modsのダウンロードリンクを作成中..."; withDelay
-$DRIVE_FILE_ID = Read-Host "[4.1/${STEPS}] 配布されたModsのファイルID(Google Driveの共有用ファイルID)を入力してください"
+$DRIVE_FILE_ID = $CONFIG_STORE.FILE_ID
 $CLOUD_ARCHIVE_FILE = 'cloudmods.zip'
 $DRIVE_DOWNLOAD_LINK = "$(createSharedDriveLink ${DRIVE_FILE_ID})"
 Write-Host "[4/${STEPS}] Modsのダウンロードリンクを作成しました。"
